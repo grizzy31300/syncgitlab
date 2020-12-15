@@ -1,0 +1,9 @@
+src:
+  url: "http://10.0.0.105"
+  token: "3YJwJ4rfGiL74WvBrMwk"
+  username: "root"
+
+dest:
+  url: "http://10.0.0.106"
+  token: "JdSSPTKxfjvzoBRc1WdH"
+  username: "root"
