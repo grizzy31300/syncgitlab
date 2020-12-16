@@ -8,13 +8,12 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
-	"golang.org/x/text/encoding/simplifiedchinese"
 	"io"
 	"io/ioutil"
 	"log"
 	chttp "net/http"
 	"os"
-	"os/exec"
+	"strings"
 )
 
 const (
@@ -84,7 +83,7 @@ func pull(path, token, username, barnch string) {
 	fmt.Println(commit)
 }
 
-/*func push(path, token, username, branch string) {
+func push(path, token, username, branch string) {
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
 
@@ -104,9 +103,10 @@ func pull(path, token, username, barnch string) {
 		CheckIfError(err)
 	}
 
-}*/
+}
 
-func gitlog(path string) {
+func gitlog(path string) []string {
+	var logs []string
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
 
@@ -123,13 +123,50 @@ func gitlog(path string) {
 	// ... just iterates over the commits, printing it
 	err = cIter.ForEach(func(c *object.Commit) error {
 		fmt.Println(c.Message)
-
+		logInfo := bufio.NewReader(strings.NewReader(c.Message))
+		for {
+			logStr, err := logInfo.ReadString('\n')
+			if err != nil {
+				if err == io.EOF {
+					break
+				} else {
+					log.Panicln("读取字符串失败:%v", err)
+				}
+				if len(logStr) == 0 || logStr == "\r\n" {
+					continue
+				}
+			}
+			logStr = strings.Trim(logStr, "\n")
+			logs = append(logs, logStr)
+		}
 		return nil
 	})
 	CheckIfError(err)
+	return logs
 }
 
-func push(path, branch string) {
+func commit(path, mes string) {
+	fmt.Println("git log commit")
+	r, err := git.PlainOpen(path)
+	CheckIfError(err)
+	w, err := r.Worktree()
+	CheckIfError(err)
+
+	// commit Since version 5.0.1, we can omit the Author signature, being read
+	// from the git config files.
+	commit, err := w.Commit(mes, &git.CommitOptions{})
+
+	CheckIfError(err)
+
+	// Prints the current HEAD to verify that all worked well.
+	Info("git show -s")
+	obj, err := r.CommitObject(commit)
+	CheckIfError(err)
+
+	fmt.Println(obj)
+}
+
+/*func push(path, branch string) {
 	cmd := fmt.Sprintf("cd %s && git push origin master:%s", path, branch)
 	execCommand(cmd)
 }
@@ -191,7 +228,7 @@ func ConvertByte2String(byte []byte, charset string) string {
 		str = string(byte)
 	}
 	return str
-}
+}*/
 
 func Newbranch(path, username, token string) {
 	r, err := git.PlainOpen(path)

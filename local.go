@@ -23,9 +23,7 @@ func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername s
 		}
 		log.Printf("克隆的url:%s", v.Http_url_to_repo)
 		gitclone(v.Http_url_to_repo, odir, susername, stoken)
-		log.Println("###########################################################")
-		gitlog(odir)
-		log.Println("###########################################################")
+		logs := gitlog(odir)
 		for _, branch := range newpmap[v.Name_with_namespace] {
 			log.Printf("%s pull的分支%s", v.Name, branch.Str)
 			pull(odir, stoken, susername, branch.Str)
@@ -43,8 +41,16 @@ func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername s
 					os.Rename(ngit, ogit)*/
 					log.Println(dtoken)
 					log.Println(dusername)
+					if len(logs) < 1 {
+						continue
+					}
+					log.Println("提交路径:%s", ndir)
+					log.Println("提交信息:%s", logs[len(logs)-1])
+					delfile(ndir)
+					mvfile(odir, ndir)
+					commit(ndir, logs[len(logs)-1])
 					//push(odir, dtoken, dusername, branch.Str)
-					push(odir, branch.Str)
+					//push(odir, branch.Str)
 				}
 			}
 		}
