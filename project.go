@@ -161,6 +161,20 @@ func listProject(url, token string) []pdata {
 	return bs
 }
 
+func duplicate(bs []pdata) []pdata {
+	for _, v := range bs {
+		log.Println(v.Namespace.Parent_id)
+		if v.Namespace.Parent_id != 0 {
+			for nk, nv := range bs {
+				if nv.Id == v.Namespace.Parent_id {
+					bs = append(bs[:nk], bs[nk+1:]...)
+				}
+			}
+		}
+	}
+	return bs
+}
+
 func pujson(input []byte) []pdata {
 	var dinfo []pdata
 	var json = jsoniter.ConfigCompatibleWithStandardLibrary

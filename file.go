@@ -13,6 +13,9 @@ func mvfile(s, d string) {
 	}
 
 	for _, fileName := range r {
+		if fileName.Name() == ".git" {
+			continue
+		}
 		os.Rename(s+"/"+fileName.Name(), d+"/"+fileName.Name())
 	}
 }

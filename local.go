@@ -8,6 +8,7 @@ import (
 )
 
 func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername string, newpmap map[string][]gjson.Result) {
+	log.Printf("多少个老项目:%d", len(oproject))
 	for _, v := range oproject {
 		if v.Name == "Monitoring" {
 			continue
@@ -32,13 +33,8 @@ func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername s
 					continue
 				}
 				if v.Name == np.Name && v.Name_with_namespace == np.Name_with_namespace {
-					/*ngit := fmt.Sprintf("%s/.git", ndir)
-					ogit := fmt.Sprintf("%s/.git", odir)
-					bgit := fmt.Sprintf("%s/.git_bak", odir)*/
 					log.Printf("克隆的url:%s", np.Http_url_to_repo)
 					gitclone(np.Http_url_to_repo, ndir, dusername, dtoken)
-					/*os.Rename(ogit, bgit)
-					os.Rename(ngit, ogit)*/
 					log.Println(dtoken)
 					log.Println(dusername)
 					if len(logs) < 1 {
@@ -49,12 +45,11 @@ func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername s
 					delfile(ndir)
 					mvfile(odir, ndir)
 					commit(ndir, logs[len(logs)-1])
-					//push(odir, dtoken, dusername, branch.Str)
-					//push(odir, branch.Str)
+					push(ndir, dusername, dtoken, "master")
 				}
 			}
 		}
-		/*log.Println(IsExist(odir))
+		log.Println(IsExist(odir))
 		if IsExist(odir) {
 			err := os.RemoveAll(odir)
 			if err != nil {
@@ -67,7 +62,7 @@ func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername s
 			if err != nil {
 				log.Panicf("移除目录失败：%v", err)
 			}
-		}*/
+		}
 	}
 }
 

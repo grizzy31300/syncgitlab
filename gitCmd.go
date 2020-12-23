@@ -9,23 +9,16 @@ import (
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/go-git/go-git/v5/plumbing/transport/http"
 	"io"
-	"io/ioutil"
 	"log"
-	chttp "net/http"
 	"os"
 	"strings"
-)
-
-const (
-	UTF8    = string("UTF-8")
-	GB18030 = string("GB18030")
 )
 
 func gitclone(url, dir, username, token string) {
 	fmt.Printf("git clone %s %s --recursive", url, dir)
 	r, err := git.PlainClone(dir, false, &git.CloneOptions{
 		Auth: &http.BasicAuth{
-			Username: username, // yes, this can be anything except an empty string
+			Username: username,
 			Password: token,
 		},
 		URL:      url,
@@ -83,28 +76,6 @@ func pull(path, token, username, barnch string) {
 	fmt.Println(commit)
 }
 
-func push(path, token, username, branch string) {
-	r, err := git.PlainOpen(path)
-	CheckIfError(err)
-
-	Info("git push")
-	// push using default options
-	err = r.Push(&git.PushOptions{
-		RemoteName: "origin",
-		Progress:   os.Stdout,
-		RefSpecs:   []config.RefSpec{config.RefSpec("refs/heads/master:refs/heads/master")},
-		Auth: &http.BasicAuth{
-			Username: username,
-			Password: token,
-		},
-	})
-	log.Println(err)
-	if err.Error() != "already up-to-date" {
-		CheckIfError(err)
-	}
-
-}
-
 func gitlog(path string) []string {
 	var logs []string
 	r, err := git.PlainOpen(path)
@@ -144,106 +115,39 @@ func gitlog(path string) []string {
 	CheckIfError(err)
 	return logs
 }
-
-func commit(path, mes string) {
-	fmt.Println("git log commit")
+func commit(path, msg string) {
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
-	w, err := r.Worktree()
-	CheckIfError(err)
+	tree, enderr := r.Worktree()
+	if enderr != nil {
+		log.Printf("获取git tree失败:%v", enderr)
+	}
+	enderr = tree.AddWithOptions(&git.AddOptions{
+		All: true,
+	})
+	if enderr != nil {
+		log.Printf("git add失败:%v", enderr)
+	}
+	treeCommit, endError := tree.Commit(msg, &git.CommitOptions{All: true})
+	if endError != nil {
+		log.Panicf("设置commitc参数失败:%v", endError)
+	}
 
-	// commit Since version 5.0.1, we can omit the Author signature, being read
-	// from the git config files.
-	commit, err := w.Commit(mes, &git.CommitOptions{})
+	_, endError = r.CommitObject(treeCommit)
+	if endError != nil {
+		log.Panicf("执行git commit失败%v", endError)
+	}
 
-	CheckIfError(err)
-
-	// Prints the current HEAD to verify that all worked well.
-	Info("git show -s")
-	obj, err := r.CommitObject(commit)
-	CheckIfError(err)
-
-	fmt.Println(obj)
 }
 
-/*func push(path, branch string) {
-	cmd := fmt.Sprintf("cd %s && git push origin master:%s", path, branch)
-	execCommand(cmd)
-}
-
-func execCommand(commandName string) bool {
-
-	//执行命令
-	cmd := exec.Command(commandName)
-
-	//显示运行的命令
-	fmt.Println(cmd.Args)
-
-	stdout, err := cmd.StdoutPipe()
-	errReader, errr := cmd.StderrPipe()
-
-	if errr != nil {
-		fmt.Println("err:" + errr.Error())
-	}
-
-	//开启错误处理
-	go handlerErr(errReader)
-
-	if err != nil {
-		fmt.Println(err)
-		return false
-	}
-
-	cmd.Start()
-	in := bufio.NewScanner(stdout)
-	for in.Scan() {
-		cmdRe := ConvertByte2String(in.Bytes(), "GB18030")
-		fmt.Println(cmdRe)
-	}
-
-	cmd.Wait()
-	cmd.Wait()
-	return true
-}
-
-//开启一个协程来错误
-func handlerErr(errReader io.ReadCloser) {
-	in := bufio.NewScanner(errReader)
-	for in.Scan() {
-		cmdRe := ConvertByte2String(in.Bytes(), "GB18030")
-		fmt.Errorf(cmdRe)
-	}
-}
-
-//对字符进行转码
-func ConvertByte2String(byte []byte, charset string) string {
-	var str string
-	switch charset {
-	case GB18030:
-		var decodeBytes, _ = simplifiedchinese.GB18030.NewDecoder().Bytes(byte)
-		str = string(decodeBytes)
-	case UTF8:
-		fallthrough
-	default:
-		str = string(byte)
-	}
-	return str
-}*/
-
-func Newbranch(path, username, token string) {
+func push(path, username, token, bath string) {
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
-	Info("git branch my-test")
-	headRef, err := r.Head()
-	CheckIfError(err)
-	ref := plumbing.NewHashReference("refs/heads/my-test", headRef.Hash())
-	err = r.Storer.SetReference(ref)
-	CheckIfError(err)
-
+	barchInfo := fmt.Sprintf("+refs/heads/%s:refs/heads/%s", bath, bath)
 	po := &git.PushOptions{
 		RemoteName: "origin",
 		Progress:   os.Stdout,
-		RefSpecs:   []config.RefSpec{config.RefSpec("refs/heads/my-test:refs/heads/my-test")},
+		RefSpecs:   []config.RefSpec{config.RefSpec(barchInfo)},
 		Auth: &http.BasicAuth{
 			Username: username,
 			Password: token,
@@ -256,59 +160,4 @@ func Newbranch(path, username, token string) {
 		}
 		log.Printf("push to remote origin error: %s", err)
 	}
-}
-
-func GetOrginBranch(url, token string) {
-	client := &chttp.Client{}
-	req, err := chttp.NewRequest("GET", url, nil)
-	if err != nil {
-		log.Fatalf("创建http客户端失败：%s", err)
-	}
-	req.Header.Set("PRIVATE-TOKEN", token)
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatalf("调用api失败:%v", err)
-	}
-	defer resp.Body.Close()
-	//body, _ := ioutil.ReadAll(resp.Body)
-	//fmt.Println(string(body))
-
-	req2, err := chttp.NewRequest("GET", "http://10.0.0.106/api/v4/projects/1/repository/branches", nil)
-	if err != nil {
-		log.Fatalf("创建http客户端失败：%s", err)
-	}
-	req2.Header.Set("PRIVATE-TOKEN", token)
-	resp2, err := client.Do(req2)
-	if err != nil {
-		log.Fatalf("调用api失败:%v", err)
-	}
-	defer resp2.Body.Close()
-	body2, err := ioutil.ReadAll(resp2.Body)
-	if err != nil {
-		log.Fatalf("读取body失败:%v", err)
-	}
-	fmt.Println(string(body2))
-}
-
-func checkout(path, commit string) {
-	r, err := git.PlainOpen(path)
-	CheckIfError(err)
-	Info("git show-ref --head HEAD")
-	ref, err := r.Head()
-	CheckIfError(err)
-	fmt.Println(ref.Hash())
-
-	w, err := r.Worktree()
-	CheckIfError(err)
-
-	Info("git checkout %s", commit)
-	err = w.Checkout(&git.CheckoutOptions{
-		Hash: plumbing.NewHash(commit),
-	})
-	CheckIfError(err)
-
-	Info("git show-ref --head HEAD")
-	ref, err = r.Head()
-	CheckIfError(err)
-	fmt.Println(ref.Hash())
 }
