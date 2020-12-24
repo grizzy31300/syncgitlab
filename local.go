@@ -22,30 +22,30 @@ func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername s
 		if !IsExist(ndir) {
 			os.Mkdir(ndir, 0755)
 		}
-		log.Printf("克隆的url:%s", v.Http_url_to_repo)
+		log.Printf("源git克隆的url:%s", v.Http_url_to_repo)
 		gitclone(v.Http_url_to_repo, odir, susername, stoken)
 		logs := gitlog(odir)
-		for _, branch := range newpmap[v.Name_with_namespace] {
-			log.Printf("%s pull的分支%s", v.Name, branch.Str)
-			pull(odir, stoken, susername, branch.Str)
-			for _, np := range nproject {
-				if np.Name == "Monitoring" {
+		for _, np := range nproject {
+			if np.Name == "Monitoring" {
+				continue
+			}
+			if v.Name == np.Name && v.Name_with_namespace == np.Name_with_namespace {
+				log.Printf("目标git克隆的url:%s", np.Http_url_to_repo)
+				gitclone(np.Http_url_to_repo, ndir, dusername, dtoken)
+				log.Println(dtoken)
+				log.Println(dusername)
+				if len(logs) < 1 {
 					continue
 				}
-				if v.Name == np.Name && v.Name_with_namespace == np.Name_with_namespace {
-					log.Printf("克隆的url:%s", np.Http_url_to_repo)
-					gitclone(np.Http_url_to_repo, ndir, dusername, dtoken)
-					log.Println(dtoken)
-					log.Println(dusername)
-					if len(logs) < 1 {
-						continue
-					}
-					log.Println("提交路径:%s", ndir)
-					log.Println("提交信息:%s", logs[len(logs)-1])
+				log.Println("提交路径:%s", ndir)
+				log.Println("提交信息:%s", logs[len(logs)-1])
+				for _, branch := range newpmap[v.Name_with_namespace] {
+					log.Printf("%s pull的分支%s", v.Name, branch.Str)
+					pull(odir, stoken, susername, branch.Str)
 					delfile(ndir)
 					mvfile(odir, ndir)
 					commit(ndir, logs[len(logs)-1])
-					push(ndir, dusername, dtoken, "master")
+					push(ndir, dusername, dtoken, branch.Str)
 				}
 			}
 		}

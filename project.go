@@ -162,16 +162,22 @@ func listProject(url, token string) []pdata {
 }
 
 func duplicate(bs []pdata) []pdata {
+	log.Println("#################################")
+	log.Println(len(bs))
+
 	for _, v := range bs {
-		log.Println(v.Namespace.Parent_id)
+		log.Printf("主ID:%d,子ID:%d\n", v.Id, v.Namespace.Parent_id)
 		if v.Namespace.Parent_id != 0 {
 			for nk, nv := range bs {
+				log.Printf("主ID:%d\n", nv.Id)
 				if nv.Id == v.Namespace.Parent_id {
 					bs = append(bs[:nk], bs[nk+1:]...)
 				}
 			}
 		}
 	}
+	log.Println(len(bs))
+	log.Println("#################################")
 	return bs
 }
 

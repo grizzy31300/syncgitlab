@@ -21,7 +21,7 @@ func main() {
 	listg := listGroup(surl, stoken)
 	createGroup(listg, durl, dtoken)
 	listp := listProject(surl, stoken)
-	listp = duplicate(listp)
+	//listp = duplicate(listp)
 	oldmap := listGroupProject(listg, surl, stoken)
 	nlistg := listGroup(durl, dtoken)
 	nlistp := trans(oldmap, nlistg, listp)

@@ -15,7 +15,7 @@ import (
 )
 
 func gitclone(url, dir, username, token string) {
-	fmt.Printf("git clone %s %s --recursive", url, dir)
+	log.Printf("git clone %s %s --recursive", url, dir)
 	r, err := git.PlainClone(dir, false, &git.CloneOptions{
 		Auth: &http.BasicAuth{
 			Username: username,
@@ -35,7 +35,7 @@ func gitclone(url, dir, username, token string) {
 	if err != nil {
 		log.Printf("读取命令返回失败%v", err)
 	}
-	fmt.Println(commit)
+	log.Println(commit)
 }
 
 func pull(path, token, username, barnch string) {
