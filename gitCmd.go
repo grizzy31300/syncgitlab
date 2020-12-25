@@ -38,8 +38,7 @@ func gitclone(url, dir, username, token string) {
 	log.Println(commit)
 }
 
-func pull(path, token, username, barnch string) {
-
+func pull(path, token, username, barch string) {
 	// We instantiate a new repository targeting the given path (the .git folder)
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
@@ -53,27 +52,21 @@ func pull(path, token, username, barnch string) {
 
 	// Pull the latest changes from the origin remote and merge into the current branch
 	Info("git pull origin")
-	barch := plumbing.NewBranchReferenceName(barnch)
+	Rbarch := plumbing.NewBranchReferenceName(barch)
 	err = w.Pull(&git.PullOptions{
 		RemoteName:    "origin",
-		ReferenceName: barch,
+		ReferenceName: Rbarch,
 		Auth: &http.BasicAuth{
 			Username: username,
 			Password: token,
 		},
+		Force: true,
 	})
-	log.Println(err)
-	if err.Error() != "already up-to-date" {
-		CheckIfError(err)
+	if err != nil {
+		if err.Error() != "already up-to-date" {
+			log.Printf("执行git push失败:%v", err)
+		}
 	}
-
-	// Print the latest commit that was just pulled
-	ref, err := r.Head()
-	CheckIfError(err)
-	commit, err := r.CommitObject(ref.Hash())
-	CheckIfError(err)
-
-	fmt.Println(commit)
 }
 
 func gitlog(path string) []string {
