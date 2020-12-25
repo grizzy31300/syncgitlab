@@ -43,9 +43,9 @@ func pull(path, token, username, barnch string) {
 	// We instantiate a new repository targeting the given path (the .git folder)
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
-	log.Println("路径是%s", path)
-	log.Println("token是%s", token)
-	log.Println("username是%s", username)
+	log.Printf("路径是%s", path)
+	log.Printf("token是%s", token)
+	log.Printf("username是%s", username)
 
 	// Get the working directory for the repository
 	w, err := r.Worktree()
@@ -144,6 +144,7 @@ func push(path, username, token, bath string) {
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
 	barchInfo := fmt.Sprintf("+refs/heads/%s:refs/heads/%s", bath, bath)
+	log.Printf("+refs/heads/%s:refs/heads/%s\n", bath, bath)
 	po := &git.PushOptions{
 		RemoteName: "origin",
 		Progress:   os.Stdout,
@@ -160,4 +161,36 @@ func push(path, username, token, bath string) {
 		}
 		log.Printf("push to remote origin error: %s", err)
 	}
+}
+
+func checkout(path, commit string) {
+	bc := false
+	if commit != "master" {
+		bc = true
+	}
+	r, err := git.PlainOpen(path)
+	CheckIfError(err)
+	// ... retrieving the commit being pointed by HEAD
+	Info("git show-ref --head HEAD")
+	ref, err := r.Head()
+	CheckIfError(err)
+	fmt.Println(ref.Hash())
+
+	w, err := r.Worktree()
+	CheckIfError(err)
+
+	// ... checking out to commit
+	Info("git checkout %s", commit)
+	err = w.Checkout(&git.CheckoutOptions{
+		Branch: plumbing.NewBranchReferenceName(commit),
+		Create: bc,
+		Force:  true,
+	})
+	CheckIfError(err)
+
+	// ... retrieving the commit being pointed by HEAD, it shows that the
+	// repository is pointing to the giving commit in detached mode
+	Info("git show-ref --head HEAD")
+	ref, err = r.Head()
+	CheckIfError(err)
 }
