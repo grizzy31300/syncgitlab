@@ -41,11 +41,12 @@ func syncCode(nproject, oproject []pdata, stoken, susername, dtoken, dusername s
 				log.Println("提交信息:%s", logs[len(logs)-1])
 				for _, branch := range newpmap[v.Name_with_namespace] {
 					log.Printf("%s pull的分支%s", v.Name, branch.Str)
-					checkout(odir, branch.Str)
+					track(odir, branch.Str)
 					pull(odir, stoken, susername, branch.Str)
+					checkoutBranch(odir, branch.Str)
 					checkout(ndir, branch.Str)
 					delfile(ndir)
-					mvfile(odir, ndir)
+					copyfile(odir, ndir)
 					commit(ndir, logs[len(logs)-1])
 					push(ndir, dusername, dtoken, branch.Str)
 				}

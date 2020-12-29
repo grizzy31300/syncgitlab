@@ -187,3 +187,38 @@ func checkout(path, commit string) {
 	ref, err = r.Head()
 	CheckIfError(err)
 }
+
+func track(path, barch string) {
+	r, err := git.PlainOpen(path)
+	CheckIfError(err)
+
+	var name, remote, remoteBranch = barch, "origin", barch
+
+	var remoteRef = plumbing.NewRemoteReferenceName(remote, remoteBranch)
+	var ref, _ = r.Reference(remoteRef, true)
+
+	var mergeRef = plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", remoteBranch))
+	_ = r.CreateBranch(&config.Branch{Name: name, Remote: remote, Merge: mergeRef})
+
+	var localRef = plumbing.ReferenceName(fmt.Sprintf("refs/heads/%s", name))
+	_ = r.Storer.SetReference(plumbing.NewHashReference(localRef, ref.Hash()))
+}
+
+func checkoutBranch(path, commit string) {
+
+	r, err := git.PlainOpen(path)
+	CheckIfError(err)
+
+	w, err := r.Worktree()
+	CheckIfError(err)
+
+	// ... checking out to commit
+	Info("git checkout %s", commit)
+	err = w.Checkout(&git.CheckoutOptions{
+		Branch: plumbing.NewBranchReferenceName(commit),
+		Create: false,
+		Force:  true,
+	})
+	CheckIfError(err)
+
+}
