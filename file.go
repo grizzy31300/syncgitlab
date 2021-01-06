@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -45,7 +46,7 @@ func copyfile(s, d string) {
 			log.Panicf("复制时读取源文件失败:%v", err)
 		}
 		defer srcfile.Close()
-
+		fmt.Printf("读取的文件名字:%s\n", sinfo.Name())
 		reader := bufio.NewReader(srcfile)
 
 		dstfile, err := os.OpenFile(d+"/"+sinfo.Name(), os.O_WRONLY|os.O_CREATE|os.O_APPEND, 0766)

@@ -1,0 +1,107 @@
+Enumerating objects: 12, done.
+Counting objects:   8% (1/12)Counting objects:  16% (2/12)Counting objects:  25% (3/12)Counting objects:  33% (4/12)Counting objects:  41% (5/12)Counting objects:  50% (6/12)Counting objects:  58% (7/12)Counting objects:  66% (8/12)Counting objects:  75% (9/12)Counting objects:  83% (10/12)Counting objects:  91% (11/12)Counting objects: 100% (12/12)Counting objects: 100% (12/12), done.
+Compressing objects:  16% (1/6)Compressing objects:  33% (2/6)Compressing objects:  50% (3/6)Compressing objects:  66% (4/6)Compressing objects:  83% (5/6)Compressing objects: 100% (6/6)Compressing objects: 100% (6/6), done.
+Total 12 (delta 1), reused 0 (delta 0), pack-reused 0
+[34;1mgit log[0m
+Enumerating objects: 10, done.
+Counting objects:  10% (1/10)Counting objects:  20% (2/10)Counting objects:  30% (3/10)Counting objects:  40% (4/10)Counting objects:  50% (5/10)Counting objects:  60% (6/10)Counting objects:  70% (7/10)Counting objects:  80% (8/10)Counting objects:  90% (9/10)Counting objects: 100% (10/10)Counting objects: 100% (10/10), done.
+Compressing objects:  20% (1/5)Compressing objects:  40% (2/5)Compressing objects:  60% (3/5)Compressing objects:  80% (4/5)Compressing objects: 100% (5/5)Compressing objects: 100% (5/5), done.
+Total 10 (delta 1), reused 0 (delta 0), pack-reused 0
+[34;1mgit pull origin[0m
+[34;1mgit checkout master[0m
+[34;1mgit show-ref --head HEAD[0m
+[34;1mgit checkout master[0m
+[34;1mgit show-ref --head HEAD[0m
+读取的文件名字:README.md
+读取的文件名字:test4500
+读取的文件名字:test4501
+Enumerating objects: 57, done.
+Counting objects:   1% (1/57)Counting objects:   3% (2/57)Counting objects:   5% (3/57)Counting objects:   7% (4/57)Counting objects:   8% (5/57)Counting objects:  10% (6/57)Counting objects:  12% (7/57)Counting objects:  14% (8/57)Counting objects:  15% (9/57)Counting objects:  17% (10/57)Counting objects:  19% (11/57)Counting objects:  21% (12/57)Counting objects:  22% (13/57)Counting objects:  24% (14/57)Counting objects:  26% (15/57)Counting objects:  28% (16/57)Counting objects:  29% (17/57)Counting objects:  31% (18/57)Counting objects:  33% (19/57)Counting objects:  35% (20/57)Counting objects:  36% (21/57)Counting objects:  38% (22/57)Counting objects:  40% (23/57)Counting objects:  42% (24/57)Counting objects:  43% (25/57)Counting objects:  45% (26/57)Counting objects:  47% (27/57)Counting objects:  49% (28/57)Counting objects:  50% (29/57)Counting objects:  52% (30/57)Counting objects:  54% (31/57)Counting objects:  56% (32/57)Counting objects:  57% (33/57)Counting objects:  59% (34/57)Counting objects:  61% (35/57)Counting objects:  63% (36/57)Counting objects:  64% (37/57)Counting objects:  66% (38/57)Counting objects:  68% (39/57)Counting objects:  70% (40/57)Counting objects:  71% (41/57)Counting objects:  73% (42/57)Counting objects:  75% (43/57)Counting objects:  77% (44/57)Counting objects:  78% (45/57)Counting objects:  80% (46/57)Counting objects:  82% (47/57)Counting objects:  84% (48/57)Counting objects:  85% (49/57)Counting objects:  87% (50/57)Counting objects:  89% (51/57)Counting objects:  91% (52/57)Counting objects:  92% (53/57)Counting objects:  94% (54/57)Counting objects:  96% (55/57)Counting objects:  98% (56/57)Counting objects: 100% (57/57)Counting objects: 100% (57/57), done.
+Compressing objects:   2% (1/34)Compressing objects:   5% (2/34)Compressing objects:   8% (3/34)Compressing objects:  11% (4/34)Compressing objects:  14% (5/34)Compressing objects:  17% (6/34)Compressing objects:  20% (7/34)Compressing objects:  23% (8/34)Compressing objects:  26% (9/34)Compressing objects:  29% (10/34)Compressing objects:  32% (11/34)Compressing objects:  35% (12/34)Compressing objects:  38% (13/34)Compressing objects:  41% (14/34)Compressing objects:  44% (15/34)Compressing objects:  47% (16/34)Compressing objects:  50% (17/34)Compressing objects:  52% (18/34)Compressing objects:  55% (19/34)Compressing objects:  58% (20/34)Compressing objects:  61% (21/34)Compressing objects:  64% (22/34)Compressing objects:  67% (23/34)Compressing objects:  70% (24/34)Compressing objects:  73% (25/34)Compressing objects:  76% (26/34)Compressing objects:  79% (27/34)Compressing objects:  82% (28/34)Compressing objects:  85% (29/34)Compressing objects:  88% (30/34)Compressing objects:  91% (31/34)Compressing objects:  94% (32/34)Compressing objects:  97% (33/34)Compressing objects: 100% (34/34)Compressing objects: 100% (34/34), done.
+Total 57 (delta 16), reused 37 (delta 7), pack-reused 0
+[34;1mgit log[0m
+Enumerating objects: 32, done.
+Counting objects:   3% (1/32)Counting objects:   6% (2/32)Counting objects:   9% (3/32)Counting objects:  12% (4/32)Counting objects:  15% (5/32)Counting objects:  18% (6/32)Counting objects:  21% (7/32)Counting objects:  25% (8/32)Counting objects:  28% (9/32)Counting objects:  31% (10/32)Counting objects:  34% (11/32)Counting objects:  37% (12/32)Counting objects:  40% (13/32)Counting objects:  43% (14/32)Counting objects:  46% (15/32)Counting objects:  50% (16/32)Counting objects:  53% (17/32)Counting objects:  56% (18/32)Counting objects:  59% (19/32)Counting objects:  62% (20/32)Counting objects:  65% (21/32)Counting objects:  68% (22/32)Counting objects:  71% (23/32)Counting objects:  75% (24/32)Counting objects:  78% (25/32)Counting objects:  81% (26/32)Counting objects:  84% (27/32)Counting objects:  87% (28/32)Counting objects:  90% (29/32)Counting objects:  93% (30/32)Counting objects:  96% (31/32)Counting objects: 100% (32/32)Counting objects: 100% (32/32), done.
+Compressing objects:   7% (1/14)Compressing objects:  14% (2/14)Compressing objects:  21% (3/14)Compressing objects:  28% (4/14)Compressing objects:  35% (5/14)Compressing objects:  42% (6/14)Compressing objects:  50% (7/14)Compressing objects:  57% (8/14)Compressing objects:  64% (9/14)Compressing objects:  71% (10/14)Compressing objects:  78% (11/14)Compressing objects:  85% (12/14)Compressing objects:  92% (13/14)Compressing objects: 100% (14/14)Compressing objects: 100% (14/14), done.
+Total 32 (delta 6), reused 27 (delta 4), pack-reused 0
+[34;1mgit pull origin[0m
+[34;1mgit checkout dev[0m
+[34;1mgit show-ref --head HEAD[0m
+[34;1mgit checkout dev[0m
+[34;1mgit show-ref --head HEAD[0m
+读取的文件名字:README.md
+读取的文件名字:ss
+读取的文件名字:test
+读取的文件名字:test17
+读取的文件名字:test18
+读取的文件名字:.gitkeep
+读取的文件名字:分支测试
+读取的文件名字:test19
+[34;1mgit pull origin[0m
+[34;1mgit checkout master[0m
+[34;1mgit show-ref --head HEAD[0m
+[34;1mgit checkout master[0m
+[34;1mgit show-ref --head HEAD[0m
+读取的文件名字:README.md
+读取的文件名字:Rec 0006.mp4
+读取的文件名字:ss
+读取的文件名字:t-table.jpg
+读取的文件名字:test
+读取的文件名字:test17
+读取的文件名字:test18
+读取的文件名字:test4000
+读取的文件名字:test4001
+读取的文件名字:test4002
+读取的文件名字:.gitkeep
+读取的文件名字:aaaa
+读取的文件名字:test19
+[34;1mgit pull origin[0m
+[34;1mgit checkout rs[0m
+[34;1mgit show-ref --head HEAD[0m
+[34;1mgit checkout rs[0m
+[34;1mgit show-ref --head HEAD[0m
+读取的文件名字:README.md
+读取的文件名字:ss
+读取的文件名字:test
+读取的文件名字:test17
+读取的文件名字:test18
+读取的文件名字:.gitkeep
+读取的文件名字:分支测试
+读取的文件名字:分支测试2
+读取的文件名字:test19
+读取的文件名字:.gitkeep
+读取的文件名字:测试3
+[34;1mgit pull origin[0m
+[34;1mgit checkout ys[0m
+[34;1mgit show-ref --head HEAD[0m
+[34;1mgit checkout ys[0m
+[34;1mgit show-ref --head HEAD[0m
+读取的文件名字:README.md
+读取的文件名字:ss
+读取的文件名字:test
+读取的文件名字:test17
+读取的文件名字:test18
+读取的文件名字:.gitkeep
+读取的文件名字:演示文件
+读取的文件名字:test19
+Enumerating objects: 52, done.
+Counting objects:   1% (1/52)Counting objects:   3% (2/52)Counting objects:   5% (3/52)Counting objects:   7% (4/52)Counting objects:   9% (5/52)Counting objects:  11% (6/52)Counting objects:  13% (7/52)Counting objects:  15% (8/52)Counting objects:  17% (9/52)Counting objects:  19% (10/52)Counting objects:  21% (11/52)Counting objects:  23% (12/52)Counting objects:  25% (13/52)Counting objects:  26% (14/52)Counting objects:  28% (15/52)Counting objects:  30% (16/52)Counting objects:  32% (17/52)Counting objects:  34% (18/52)Counting objects:  36% (19/52)Counting objects:  38% (20/52)Counting objects:  40% (21/52)Counting objects:  42% (22/52)Counting objects:  44% (23/52)Counting objects:  46% (24/52)Counting objects:  48% (25/52)Counting objects:  50% (26/52)Counting objects:  51% (27/52)Counting objects:  53% (28/52)Counting objects:  55% (29/52)Counting objects:  57% (30/52)Counting objects:  59% (31/52)Counting objects:  61% (32/52)Counting objects:  63% (33/52)Counting objects:  65% (34/52)Counting objects:  67% (35/52)Counting objects:  69% (36/52)Counting objects:  71% (37/52)Counting objects:  73% (38/52)Counting objects:  75% (39/52)Counting objects:  76% (40/52)Counting objects:  78% (41/52)Counting objects:  80% (42/52)Counting objects:  82% (43/52)Counting objects:  84% (44/52)Counting objects:  86% (45/52)Counting objects:  88% (46/52)Counting objects:  90% (47/52)Counting objects:  92% (48/52)Counting objects:  94% (49/52)Counting objects:  96% (50/52)Counting objects:  98% (51/52)Counting objects: 100% (52/52)Counting objects: 100% (52/52), done.
+Compressing objects:   2% (1/37)Compressing objects:   5% (2/37)Compressing objects:   8% (3/37)Compressing objects:  10% (4/37)Compressing objects:  13% (5/37)Compressing objects:  16% (6/37)Compressing objects:  18% (7/37)Compressing objects:  21% (8/37)Compressing objects:  24% (9/37)Compressing objects:  27% (10/37)Compressing objects:  29% (11/37)Compressing objects:  32% (12/37)Compressing objects:  35% (13/37)Compressing objects:  37% (14/37)Compressing objects:  40% (15/37)Compressing objects:  43% (16/37)Compressing objects:  45% (17/37)Compressing objects:  48% (18/37)Compressing objects:  51% (19/37)Compressing objects:  54% (20/37)Compressing objects:  56% (21/37)Compressing objects:  59% (22/37)Compressing objects:  62% (23/37)Compressing objects:  64% (24/37)Compressing objects:  67% (25/37)Compressing objects:  70% (26/37)Compressing objects:  72% (27/37)Compressing objects:  75% (28/37)Compressing objects:  78% (29/37)Compressing objects:  81% (30/37)Compressing objects:  83% (31/37)Compressing objects:  86% (32/37)Compressing objects:  89% (33/37)Compressing objects:  91% (34/37)Compressing objects:  94% (35/37)Compressing objects:  97% (36/37)Compressing objects: 100% (37/37)Compressing objects: 100% (37/37), done.
+Total 52 (delta 18), reused 30 (delta 9), pack-reused 0
+[34;1mgit log[0m
+Enumerating objects: 14, done.
+Counting objects:   7% (1/14)Counting objects:  14% (2/14)Counting objects:  21% (3/14)Counting objects:  28% (4/14)Counting objects:  35% (5/14)Counting objects:  42% (6/14)Counting objects:  50% (7/14)Counting objects:  57% (8/14)Counting objects:  64% (9/14)Counting objects:  71% (10/14)Counting objects:  78% (11/14)Counting objects:  85% (12/14)Counting objects:  92% (13/14)Counting objects: 100% (14/14)Counting objects: 100% (14/14), done.
+Compressing objects:  11% (1/9)Compressing objects:  22% (2/9)Compressing objects:  33% (3/9)Compressing objects:  44% (4/9)Compressing objects:  55% (5/9)Compressing objects:  66% (6/9)Compressing objects:  77% (7/9)Compressing objects:  88% (8/9)Compressing objects: 100% (9/9)Compressing objects: 100% (9/9), done.
+Total 14 (delta 1), reused 0 (delta 0), pack-reused 0
+[34;1mgit pull origin[0m
+[34;1mgit checkout master[0m
+[34;1mgit show-ref --head HEAD[0m
+[34;1mgit checkout master[0m
+[34;1mgit show-ref --head HEAD[0m
+读取的文件名字:.gitlab-ci.yml
+读取的文件名字:SUMMARY.md.tmp
+读取的文件名字:test.md
+读取的文件名字:test2.md
+读取的文件名字:test3.md
+读取的文件名字:book.json
+读取的文件名字:startup.sh

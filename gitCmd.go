@@ -14,7 +14,7 @@ import (
 	"strings"
 )
 
-func gitclone(url, dir, username, token string) {
+func gitclone(url, dir, username, token string) error {
 	log.Printf("git clone %s %s --recursive", url, dir)
 	r, err := git.PlainClone(dir, false, &git.CloneOptions{
 		Auth: &http.BasicAuth{
@@ -25,26 +25,27 @@ func gitclone(url, dir, username, token string) {
 		Progress: os.Stdout,
 	})
 	if err != nil {
-		log.Panicf("克隆仓库失败%v", err)
+		log.Printf("克隆仓库失败%v\n", err)
+		return err
 	}
 	res, err := r.Head()
 	if err != nil {
-		log.Panicf("检索头部指向的分支失败%v", err)
+		log.Printf("检索头部指向的分支失败%v\n", err)
+		return err
 	}
 	commit, err := r.CommitObject(res.Hash())
 	if err != nil {
-		log.Printf("读取命令返回失败%v", err)
+		log.Printf("读取命令返回失败%v\n", err)
+		return err
 	}
 	log.Println(commit)
+	return nil
 }
 
 func pull(path, token, username, barch string) {
 	// We instantiate a new repository targeting the given path (the .git folder)
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
-	log.Printf("路径是%s", path)
-	log.Printf("token是%s", token)
-	log.Printf("username是%s", username)
 
 	// Get the working directory for the repository
 	w, err := r.Worktree()
@@ -64,7 +65,7 @@ func pull(path, token, username, barch string) {
 	})
 	if err != nil {
 		if err.Error() != "already up-to-date" {
-			log.Printf("执行git push失败:%v", err)
+			log.Printf("执行git pull失败:%v", err)
 		}
 	}
 }
@@ -86,19 +87,20 @@ func gitlog(path string) []string {
 
 	// ... just iterates over the commits, printing it
 	err = cIter.ForEach(func(c *object.Commit) error {
-		fmt.Println(c.Message)
 		logInfo := bufio.NewReader(strings.NewReader(c.Message))
 		for {
 			logStr, err := logInfo.ReadString('\n')
 			if err != nil {
 				if err == io.EOF {
+					logStr = strings.Trim(logStr, "\n")
+					logs = append(logs, logStr)
 					break
 				} else {
 					log.Panicln("读取字符串失败:%v", err)
 				}
-				if len(logStr) == 0 || logStr == "\r\n" {
-					continue
-				}
+			}
+			if len(logStr) == 0 || logStr == "\n" {
+				continue
 			}
 			logStr = strings.Trim(logStr, "\n")
 			logs = append(logs, logStr)
@@ -157,35 +159,36 @@ func push(path, username, token, bath string) {
 }
 
 func checkout(path, commit string) {
-	bc := false
-	if commit != "master" {
-		bc = true
-	}
+	log.Println(path, commit)
 	r, err := git.PlainOpen(path)
 	CheckIfError(err)
-	// ... retrieving the commit being pointed by HEAD
-	Info("git show-ref --head HEAD")
-	ref, err := r.Head()
-	CheckIfError(err)
-	fmt.Println(ref.Hash())
+	log.Println(1)
 
 	w, err := r.Worktree()
 	CheckIfError(err)
-
+	log.Println(2)
 	// ... checking out to commit
-	Info("git checkout %s", commit)
+	log.Printf("git checkout %s", commit)
 	err = w.Checkout(&git.CheckoutOptions{
 		Branch: plumbing.NewBranchReferenceName(commit),
-		Create: bc,
+		Create: false,
 		Force:  true,
 	})
-	CheckIfError(err)
-
-	// ... retrieving the commit being pointed by HEAD, it shows that the
-	// repository is pointing to the giving commit in detached mode
-	Info("git show-ref --head HEAD")
-	ref, err = r.Head()
-	CheckIfError(err)
+	if err != nil {
+		if err.Error() == "reference not found" {
+			err = w.Checkout(&git.CheckoutOptions{
+				Branch: plumbing.NewBranchReferenceName(commit),
+				Create: true,
+				Force:  true,
+			})
+			if err != nil {
+				log.Panicf("checkout失败:%v", err)
+			}
+		} else {
+			log.Panicf("checkout失败:%v", err)
+		}
+	}
+	log.Println(3)
 }
 
 func track(path, barch string) {
@@ -221,4 +224,15 @@ func checkoutBranch(path, commit string) {
 	})
 	CheckIfError(err)
 
+}
+
+func getBranch(path string) {
+	r, err := git.PlainOpen(path)
+	CheckIfError(err)
+
+	s, err := r.Branches()
+	s.ForEach(func(reference *plumbing.Reference) error {
+		reference.Name()
+		return nil
+	})
 }
